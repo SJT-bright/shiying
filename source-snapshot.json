@@ -132,6 +132,6 @@
     "Vendor/MediaSources/ffmpeg-9.0.1.tar.xz": "cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635",
     ".github/workflows/windows-release.yml": "7c0c62f5f3ebd0ca5315f8ae5e65ce230770408b013fa31bb37cd78079db3756",
     "Vendor/MediaSources/zlib-1.3.2.tar.xz": "d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3",
-    ".github/workflows/publish-windows-assets.yml": "f05cdd76f7a7f106df8e05f8022b281c683cfc094ed1bf57c3db437d26b7eeba"
+    ".github/workflows/publish-windows-assets.yml": "f5fc4d87c0fd375b4111a1a14285da41d2d273ddfe66a9710a28b1e90d4bab11"
   }
 }

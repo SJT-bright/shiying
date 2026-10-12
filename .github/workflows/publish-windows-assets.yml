@@ -58,7 +58,7 @@ jobs:
           PY
       - name: Re-download release assets and verify bytes
         run: |
-          gh release download v1.8.0 --repo "$TASK_REPO" --pattern 'Shiying-1.8.0-Windows-x64-*' --dir downloaded-release
+          gh release download v1.8.0 --repo "$TASK_REPO" --pattern 'Shiying-1.8.0-Windows-x64*' --dir downloaded-release
           python3 - <<'PY'
           import json,pathlib,hashlib
           p=pathlib.Path('published-assets-proof.json');d=json.loads(p.read_text())
