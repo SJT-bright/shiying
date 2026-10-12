@@ -1,6 +1,6 @@
 """Ordered Douyin image albums. Keep supplied image bytes; publish only a complete album."""
 from __future__ import annotations
-import ctypes, errno, json, os, re, subprocess, tempfile, time
+import ctypes, errno, json, os, re, subprocess, sys, tempfile, time
 from pathlib import Path
 import httpx
 import worker
@@ -59,7 +59,11 @@ def verify_image(path):
     return width, height
 
 def publish_directory(source, destination):
-    """macOS exclusive rename is atomic and also refuses an existing empty folder."""
+    """Atomically publish without replacing an existing folder on either OS."""
+    if sys.platform == 'win32':
+        # Windows rename refuses an existing destination, including empty folders.
+        os.rename(source, destination)
+        return
     library = ctypes.CDLL(None, use_errno=True)
     rename = library.renamex_np
     rename.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_uint]

@@ -32,6 +32,23 @@ endian = 'little'
 needs_exe_wrapper = true
 INI
 fi
+if [ "$task_target" = windows ] && [ ! -f "$task_prefix/lib/libz.a" ]; then
+ cd "$task_build/sources/zlib"
+ make -f win32/Makefile.gcc PREFIX="$task_cross" -j"$task_jobs" libz.a
+ mkdir -p "$task_prefix/lib/pkgconfig" "$task_prefix/include"
+ cp libz.a "$task_prefix/lib/"
+ cp zlib.h zconf.h "$task_prefix/include/"
+ cat > "$task_prefix/lib/pkgconfig/zlib.pc" <<EOF
+prefix=$task_prefix
+libdir=\${prefix}/lib
+includedir=\${prefix}/include
+Name: zlib
+Description: Frozen static zlib for PNG decoding
+Version: 1.3.2
+Libs: -L\${libdir} -lz
+Cflags: -I\${includedir}
+EOF
+fi
 cd "$task_build/sources/openssl"
 if [ ! -f "$task_prefix/lib/libssl.a" ] && [ ! -f "$task_prefix/lib64/libssl.a" ]; then
  if [ "$task_target" = windows ]; then
@@ -63,7 +80,7 @@ if [ ! -f "$task_prefix/lib/libdav1d.a" ]; then
  meson install -C build
 fi
 cd "$task_build/sources/ffmpeg"
-set -- --prefix="$task_prefix" --disable-shared --enable-static --enable-gpl --enable-version3 --enable-libx264 --enable-libdav1d --enable-openssl --disable-doc --disable-debug --disable-ffplay --pkg-config-flags=--static
+set -- --prefix="$task_prefix" --disable-shared --enable-static --enable-gpl --enable-version3 --enable-libx264 --enable-libdav1d --enable-openssl --enable-zlib --disable-doc --disable-debug --disable-ffplay --pkg-config-flags=--static
 if [ "$task_target" = windows ]; then
  ./configure "$@" --target-os=mingw32 --arch=x86_64 --enable-cross-compile --cross-prefix="$task_cross" --pkg-config=pkg-config --extra-cflags="-I$task_prefix/include" --extra-ldflags="-L$task_prefix/lib -static -static-libgcc" --extra-libs="-lws2_32 -lcrypt32 -lbcrypt"
 else
