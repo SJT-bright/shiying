@@ -1,0 +1,73 @@
+name: Publish verified Windows assets
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        required: true
+        default: '38292111491'
+      source_sha:
+        required: true
+        default: 'e76240318d6bf1d6cdfc06eefff7a45a79b256f4'
+permissions:
+  contents: write
+  actions: read
+jobs:
+  upload:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TASK_RUN: ${{ inputs.run_id }}
+      TASK_SOURCE: ${{ inputs.source_sha }}
+      TASK_REPO: SJT-bright/shiying
+    steps:
+      - name: Verify completed native Windows run
+        run: |
+          gh run view "$TASK_RUN" --repo "$TASK_REPO" --json conclusion,headSha,event,headBranch > run.json
+          python3 - <<'PY'
+          import json,os,re
+          d=json.load(open('run.json'))
+          assert re.fullmatch(r'[a-f0-9]{40}',os.environ['TASK_SOURCE'])
+          assert d['conclusion']=='success' and d['headSha']==os.environ['TASK_SOURCE']
+          assert d['event']=='workflow_dispatch' and d['headBranch']=='main'
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: shiying-windows-release
+          path: verified-assets
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ github.token }}
+          repository: SJT-bright/shiying
+      - name: Verify checksums and upload to existing draft
+        run: |
+          python3 - <<'PY'
+          import pathlib,hashlib,json,subprocess,os,zipfile
+          root=pathlib.Path('verified-assets')
+          checks={line.strip().split(None,1)[1]:line.strip().split(None,1)[0] for line in (root/'WINDOWS-SHA256SUMS.txt').read_text(encoding='utf-8-sig').splitlines() if line.strip()}
+          names=['Shiying-1.8.0-Windows-x64-Setup.exe','Shiying-1.8.0-Windows-x64.zip']
+          repo=os.environ['TASK_REPO'];release=json.loads(subprocess.check_output(['gh','release','view','v1.8.0','--repo',repo,'--json','isDraft']))
+          assert release['isDraft'] is True
+          receipt=[]
+          for name in names:
+              file=root/name;digest=hashlib.sha256(file.read_bytes()).hexdigest();assert digest==checks[name]
+              if name.endswith('.zip'):
+                  with zipfile.ZipFile(file) as z:assert z.testzip() is None
+              subprocess.run(['gh','release','upload','v1.8.0',str(file),'--clobber','--repo',repo],check=True)
+              receipt.append(dict(name=name,sha256=digest,bytes=file.stat().st_size))
+          pathlib.Path('published-assets-proof.json').write_text(json.dumps(dict(sourceSHA=os.environ['TASK_SOURCE'],windowsRun=int(os.environ['TASK_RUN']),uploaded=receipt),indent=2))
+          PY
+      - name: Re-download release assets and verify bytes
+        run: |
+          gh release download v1.8.0 --repo "$TASK_REPO" --pattern 'Shiying-1.8.0-Windows-x64-*' --dir downloaded-release
+          python3 - <<'PY'
+          import json,pathlib,hashlib
+          p=pathlib.Path('published-assets-proof.json');d=json.loads(p.read_text())
+          for item in d['uploaded']:
+              f=pathlib.Path('downloaded-release')/item['name'];assert f.stat().st_size==item['bytes'];assert hashlib.sha256(f.read_bytes()).hexdigest()==item['sha256']
+          d['downloadedReleaseBytesVerified']=True;p.write_text(json.dumps(d,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: published-assets-proof
+          path: published-assets-proof.json
