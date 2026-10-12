@@ -52,7 +52,7 @@
     "Scripts/prepare_github_source.py": "38c2c6276e0b5d438e811d7f3e383eb0b06c60d1c62aa02319b723f3b11555cb",
     "Scripts/worker_fingerprint.py": "acc7214aa021b5afb259e34414ede769133144b178014b2001f5a5c767014ce1",
     "Scripts/check_inline_regressions.sh": "20804e073541cb8de4b64059d8a0a0c3786571a0994be66674863f412d2c6134",
-    "Scripts/check_creator_regressions.sh": "5ab6d3cbc3fc2752662ff78b7c2140750464013948413ff1a2dfc17233a8f737",
+    "Scripts/check_creator_regressions.sh": "e42ebb59a66c6d7b5e6e29b7a1f85284f919016f162738f9c05aaaf3233a512f",
     "Scripts/bundle_tools.py": "d42e4fb70f4bb4f1e244d1bc455177db2d74b5127e6f9d610e74b42c9a218912",
     "Scripts/build_release_mac.sh": "49ff112cd1df01a3fc14f6018f16129664923794f2250d694ecc5e3147fdb3aa",
     "Scripts/icon.swift": "bfe20f050368d0b10c9e17ea8a160e0dbd51792445249d17acbd8174f46258b6",
@@ -72,7 +72,7 @@
     "Tests/test_article_worker.py": "9f6f9f493b388af4cd210a42fc849b457f55178872a12382c66f701bf8eaa4ff",
     "Tests/test_platform_statistics.py": "16315a80a92abded394b7fe9fd1b83b4832fe134e00bfdb50d6c6ed7fbacccb3",
     "Tests/PersistenceChecks.swift": "261c7bf131e2c22153c7713c68f0d6ccf489e07ec8cef28527ce6f371fb94e50",
-    "Tests/test_creator_regression.py": "50ca5650388018973dace5a9fc060df31a6e5143a3e2ede3532a562c9aa60fe1",
+    "Tests/test_creator_regression.py": "5421e209bdcc48825cb15307d6dfd626d2e5e44410a54171a50741a16b69f280",
     "Tests/test_platform_capture.py": "b8d760fb2534c52868414a5d627c4125c6d31fd73e8322b14f6bc5c6915f69c1",
     "Tests/test_photo_worker.py": "924814a45a93de5f4eeb9f58241cd944ea470903faffd4f3e19adbe048ebbfb4",
     "Tests/test_metrics_worker.py": "2bbdc9fa5e3524ee5ac28979e084e4307c62779fb273a518987baa29b9666166",
@@ -116,8 +116,8 @@
     "Desktop/runner.cjs": "6f38c03ea314873bf895a910416124ad8093730e864a360c929fa1fb4632b879",
     "Desktop/package-lock.json": "ebc1fadb13c59d1794f9333861947dea8e7fd335eac4fba78c46c2fce9eae533",
     "Desktop/package.json": "f5f73d1ea02c99f27395491d6df7af81f4c7a64e73c6c6b8a8bb56f4704f5a49",
-    "Desktop/main.cjs": "7767a3d643724e15a3932c125226a356fa06fb067cbf14f42b229ea1b750db21",
-    "Desktop/self-test.cjs": "9c8e4598d6f754cfe9a8c7cb0c2dda238723bbb73e03dfbb06ae6278dfd02d56",
+    "Desktop/main.cjs": "2acaf01edb7aac67961465bd23c77be3022f9dde6aac6ef594d6deb1ca31d9ef",
+    "Desktop/self-test.cjs": "06876aba8d5c4dd708064b0481b01597991ec92b6800a666ae5992dc10335c5e",
     "Desktop/ui/renderer.js": "eaad998c0a45e6df0e9b714266f72ae3125b24e3a9a12fa4499a08904003f395",
     "Desktop/ui/index.html": "6c04bf7233aaeae2b435302b68ae0dd2c2a2a362c6bc89aee917099305f2ae70",
     "Desktop/ui/wallpaper.png": "8d926140deb728e337d16d3b2d252b6faa15fc6695227bb41d1a1bb442819de6",
@@ -130,6 +130,6 @@
     "Vendor/MediaSources/openssl-3.6.4.tar.gz": "9bffaa1ad1e07b354c21bd3324ec02fa15579f45a7d0494b3e74bc449b7333ef",
     "Vendor/MediaSources/x264-b35605a.tar.bz2": "6eeb82934e69fd51e043bd8c5b0d152839638d1ce7aa4eea65a3fedcf83ff224",
     "Vendor/MediaSources/ffmpeg-9.0.1.tar.xz": "cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635",
-    ".github/workflows/windows-release.yml": "d259dbf853b0f984a1823bcd7b749310e3af81cf705fa157711f9e2e2683d55a"
+    ".github/workflows/windows-release.yml": "276f9550c7a9928b56d9ff87acb8455271ebec03327a7d8bab4024468dc8b445"
   }
 }

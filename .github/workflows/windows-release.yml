@@ -112,6 +112,17 @@ jobs:
           $p = Start-Process -FilePath "$target\拾影.exe" -ArgumentList "--self-test --self-test-report=$report" -PassThru
           if (-not $p.WaitForExit(120000)) { Stop-Process -Id $p.Id; throw 'Installed check timed out' }
           if ($p.ExitCode -ne 0) { throw 'Installed executable failed' }
+      - name: Verify login across two cold processes
+        shell: pwsh
+        run: |
+          $profile = Join-Path ([System.IO.Path]::GetTempPath()) ("shiying-session-test-" + [guid]::NewGuid().ToString('N'))
+          $exe = "$PWD\dist\windows\win-unpacked\拾影.exe"
+          foreach ($phase in @('write','read')) {
+            $report = "$PWD\windows-session-$phase-self-test.json"
+            $p = Start-Process -FilePath $exe -ArgumentList "--self-test --session-phase=$phase --self-test-profile=$profile --self-test-report=$report" -PassThru
+            if (-not $p.WaitForExit(60000)) { Stop-Process -Id $p.Id; throw 'Session check timed out' }
+            if ($p.ExitCode -ne 0) { throw 'Cold session check failed' }
+          }
       - name: Create checksums
         shell: pwsh
         run: |
