@@ -1,0 +1,12 @@
+.venv/
+node_modules/
+build/
+dist/
+release-assets/
+Desktop/resources/
+Desktop/.electron-download/
+*.log
+*.app
+.DS_Store
+__pycache__/
+*.pyc

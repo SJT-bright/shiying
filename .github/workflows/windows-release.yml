@@ -1,0 +1,131 @@
+name: Windows release
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  media-tools:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache@v4
+        id: media-cache
+        with:
+          path: build/media-windows/Tools
+          key: media-windows-v3-${{ hashFiles('Vendor/MediaSources/sources.json', 'Scripts/build_media_tools.sh') }}
+      - name: Install build tools
+        if: steps.media-cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y build-essential mingw-w64 pkg-config nasm ninja-build perl
+          python -m pip install meson==1.12.1
+      - name: Build frozen media sources
+        if: steps.media-cache.outputs.cache-hit != 'true'
+        run: sh Scripts/build_media_tools.sh windows build/media-windows > media-build.log 2>&1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-media-tools
+          path: build/media-windows/Tools
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: media-build-log
+          path: media-build.log
+  windows:
+    needs: media-tools
+    runs-on: windows-2025
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: Desktop/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows-media-tools
+          path: build/media-windows/Tools
+      - name: Verify native Windows media binaries
+        shell: pwsh
+        run: |
+          & build/media-windows/Tools/ffmpeg.exe -hide_banner -version
+          if ($LASTEXITCODE -ne 0) { throw 'FFmpeg native launch failed' }
+          & build/media-windows/Tools/ffprobe.exe -hide_banner -version
+          if ($LASTEXITCODE -ne 0) { throw 'FFprobe native launch failed' }
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements-build.txt
+      - name: Windows backend checks
+        shell: pwsh
+        env:
+          POCKET_TOOLS: ${{ github.workspace }}\build\media-windows\Tools
+          PYTHONPATH: Tests;Backend;Backend/upstream/src
+          PYTHONUTF8: '1'
+        run: |
+          python -m unittest -v test_worker test_windows_worker test_creator_session test_creator_regression test_creator_diagnostics test_worker_diagnostics test_platform_worker test_photo_worker test_platform_capture test_platform_statistics test_metrics_worker test_article_worker test_article_metadata test_article_cover 2>&1 | Tee-Object backend-tests.log
+          if ($LASTEXITCODE -ne 0) { throw 'Backend checks failed' }
+      - name: Prepare Windows worker and resources
+        run: python Scripts/build_windows.py --tools build/media-windows/Tools
+      - name: Install and test desktop
+        working-directory: Desktop
+        run: |
+          npm ci --no-audit --no-fund
+          npm test
+      - name: Build installer and portable archive
+        working-directory: Desktop
+        run: npm run build:win
+      - name: Test unpacked executable
+        shell: pwsh
+        run: |
+          $report = "$PWD\windows-packaged-self-test.json"
+          $exe = "$PWD\dist\windows\win-unpacked\拾影.exe"
+          $p = Start-Process -FilePath $exe -ArgumentList "--self-test --self-test-report=$report" -PassThru
+          if (-not $p.WaitForExit(120000)) { Stop-Process -Id $p.Id; throw 'Packaged check timed out' }
+          if ($p.ExitCode -ne 0) { throw 'Packaged executable failed' }
+          $result = Get-Content $report -Raw | ConvertFrom-Json
+          if (-not $result.passed -or -not $result.packaged -or $result.platform -ne 'win32') { throw 'Invalid platform proof' }
+      - name: Verify portable archive and installer
+        shell: pwsh
+        run: |
+          $zip = Get-ChildItem dist/windows/Shiying-*-Windows-x64.zip | Select-Object -First 1
+          Expand-Archive $zip.FullName -DestinationPath "$env:RUNNER_TEMP\shiying-portable-proof"
+          $report = "$PWD\windows-portable-self-test.json"
+          $p = Start-Process -FilePath "$env:RUNNER_TEMP\shiying-portable-proof\拾影.exe" -ArgumentList "--self-test --self-test-report=$report" -PassThru
+          if (-not $p.WaitForExit(120000)) { Stop-Process -Id $p.Id; throw 'Portable check timed out' }
+          if ($p.ExitCode -ne 0) { throw 'Portable executable failed' }
+          $installer = Get-ChildItem dist/windows/*Setup.exe | Select-Object -First 1
+          $target = "$env:RUNNER_TEMP\shiying-installed-proof"
+          $i = Start-Process -FilePath $installer.FullName -ArgumentList "/S /D=$target" -Wait -PassThru
+          if ($i.ExitCode -ne 0) { throw 'Installer failed' }
+          $report = "$PWD\windows-installed-self-test.json"
+          $p = Start-Process -FilePath "$target\拾影.exe" -ArgumentList "--self-test --self-test-report=$report" -PassThru
+          if (-not $p.WaitForExit(120000)) { Stop-Process -Id $p.Id; throw 'Installed check timed out' }
+          if ($p.ExitCode -ne 0) { throw 'Installed executable failed' }
+      - name: Create checksums
+        shell: pwsh
+        run: |
+          Get-ChildItem dist/windows/Shiying-* | ForEach-Object { $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower(); "$hash  $($_.Name)" } | Set-Content dist/windows/WINDOWS-SHA256SUMS.txt -Encoding utf8
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shiying-windows-release
+          path: |
+            dist/windows/Shiying-*
+            dist/windows/WINDOWS-SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-acceptance
+          path: |
+            backend-tests.log
+            windows-*-self-test.json
