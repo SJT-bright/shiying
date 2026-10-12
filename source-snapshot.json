@@ -116,7 +116,7 @@
     "Desktop/runner.cjs": "6f38c03ea314873bf895a910416124ad8093730e864a360c929fa1fb4632b879",
     "Desktop/package-lock.json": "ebc1fadb13c59d1794f9333861947dea8e7fd335eac4fba78c46c2fce9eae533",
     "Desktop/package.json": "f5f73d1ea02c99f27395491d6df7af81f4c7a64e73c6c6b8a8bb56f4704f5a49",
-    "Desktop/main.cjs": "f1c9733458c7e2e43e03580c12b508961eedd0966cabc66177912769efbcd092",
+    "Desktop/main.cjs": "edcc7357b6dedf6501a9dd0f9ac105579b08407175d6f5db114ecc598a2d1cb3",
     "Desktop/self-test.cjs": "373f144036a263dfb17daaa502ef5be05795d2a49059055d9d7ed47a0635d8ff",
     "Desktop/ui/renderer.js": "eaad998c0a45e6df0e9b714266f72ae3125b24e3a9a12fa4499a08904003f395",
     "Desktop/ui/index.html": "6c04bf7233aaeae2b435302b68ae0dd2c2a2a362c6bc89aee917099305f2ae70",
@@ -130,7 +130,7 @@
     "Vendor/MediaSources/openssl-3.6.4.tar.gz": "9bffaa1ad1e07b354c21bd3324ec02fa15579f45a7d0494b3e74bc449b7333ef",
     "Vendor/MediaSources/x264-b35605a.tar.bz2": "6eeb82934e69fd51e043bd8c5b0d152839638d1ce7aa4eea65a3fedcf83ff224",
     "Vendor/MediaSources/ffmpeg-9.0.1.tar.xz": "cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635",
-    ".github/workflows/windows-release.yml": "47996a29e0d0da528bf164c8cc756f7caef591d4a81d0bb18129b9f5ee9a4270",
+    ".github/workflows/windows-release.yml": "7c0c62f5f3ebd0ca5315f8ae5e65ce230770408b013fa31bb37cd78079db3756",
     "Vendor/MediaSources/zlib-1.3.2.tar.xz": "d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3"
   }
 }
