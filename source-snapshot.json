@@ -60,8 +60,8 @@
     "Scripts/unpack_media_sources.py": "30c01670b66eb087f7fab685459f30551ca904b112d7f09f20f0c27956168330",
     "Scripts/build_windows.py": "874180f1420efde7ca15f1f7b4005fdfb8c628e2273b957dffa21d4227a5ac3b",
     "Scripts/build.sh": "0a70409389a99fa82ee1abfa349822fc718ba8beef0b97e713abee684803f066",
-    "Scripts/build_media_tools.sh": "b9beb0553f89475ee94ea5f6056236461e5e1f3b0bd8aac2cb67d02491e3dce0",
-    "Scripts/audit_release.py": "a30f64f81016201440c300d05fae96c586a71356a9d470bb9419763f0490a96a",
+    "Scripts/build_media_tools.sh": "63e888a1858a2660ea8e8cb479661c426e66ee80d561436db9ad0f9c0a043999",
+    "Scripts/audit_release.py": "a48858051250a7e3e64b721237522ecbc0636e1e3cf161c9ebe80e365525d4c3",
     "Scripts/preview_glass.sh": "29f183a3988424c2b30c78f0214a698cbed413f12efdba0e74bdc3920aa95d1a",
     "Scripts/check_statistics_regressions.sh": "801f6e43731bd0748561f860593ebc6e2f917bfb45542a78b3eb59ac7a6042bd",
     "Scripts/licenses.py": "d4ae8eefb510252e6c1b7790807a37742ba44f950cb19d7483b29fcc3ab46789",
@@ -130,6 +130,6 @@
     "Vendor/MediaSources/openssl-3.6.4.tar.gz": "9bffaa1ad1e07b354c21bd3324ec02fa15579f45a7d0494b3e74bc449b7333ef",
     "Vendor/MediaSources/x264-b35605a.tar.bz2": "6eeb82934e69fd51e043bd8c5b0d152839638d1ce7aa4eea65a3fedcf83ff224",
     "Vendor/MediaSources/ffmpeg-9.0.1.tar.xz": "cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635",
-    ".github/workflows/windows-release.yml": "276f9550c7a9928b56d9ff87acb8455271ebec03327a7d8bab4024468dc8b445"
+    ".github/workflows/windows-release.yml": "47996a29e0d0da528bf164c8cc756f7caef591d4a81d0bb18129b9f5ee9a4270"
   }
 }

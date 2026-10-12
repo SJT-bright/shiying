@@ -36,7 +36,9 @@ jobs:
         if: always()
         with:
           name: media-build-log
-          path: media-build.log
+          path: |
+            media-build.log
+            build/media-windows/sources/ffmpeg/ffbuild/config.log
   windows:
     needs: media-tools
     runs-on: windows-2025

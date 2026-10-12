@@ -65,7 +65,7 @@ fi
 cd "$task_build/sources/ffmpeg"
 set -- --prefix="$task_prefix" --disable-shared --enable-static --enable-gpl --enable-version3 --enable-libx264 --enable-libdav1d --enable-openssl --disable-doc --disable-debug --disable-ffplay --pkg-config-flags=--static
 if [ "$task_target" = windows ]; then
- ./configure "$@" --target-os=mingw32 --arch=x86_64 --enable-cross-compile --cross-prefix="$task_cross" --extra-cflags="-I$task_prefix/include" --extra-ldflags="-L$task_prefix/lib -static -static-libgcc" --extra-libs="-lws2_32 -lcrypt32 -lbcrypt"
+ ./configure "$@" --target-os=mingw32 --arch=x86_64 --enable-cross-compile --cross-prefix="$task_cross" --pkg-config=pkg-config --extra-cflags="-I$task_prefix/include" --extra-ldflags="-L$task_prefix/lib -static -static-libgcc" --extra-libs="-lws2_32 -lcrypt32 -lbcrypt"
 else
  ./configure "$@" --extra-cflags="-I$task_prefix/include" --extra-ldflags="-L$task_prefix/lib"
 fi
