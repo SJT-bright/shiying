@@ -8,7 +8,7 @@ for name in identifiers:
     if name in {'runner','runneradmin','root'}:continue
     for value in ['/Users/'+name,'C:\\Users\\'+name]:
         patterns.extend([value.encode(),urllib.parse.quote(value,safe='').encode(),urllib.parse.quote(value).encode()])
-secrets=[re.compile(rb'gh[pousr]_[A-Za-z0-9]{30,}'),re.compile(rb'sk-(?:proj-)?[A-Za-z0-9_-]{32,}'),re.compile(rb'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')]
+secrets=[re.compile(rb'gh[pousr]_[A-Za-z0-9]{30,}'),re.compile(rb'(?<![A-Za-z0-9_-])sk-(?:proj-)?[A-Za-z0-9_-]{32,}'),re.compile(rb'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')]
 issues=[]
 def check(label,data):
     if any(x.lower() in data.lower() for x in patterns):issues.append((label,'private local path'))
