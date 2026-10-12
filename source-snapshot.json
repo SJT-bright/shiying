@@ -58,7 +58,7 @@
     "Scripts/icon.swift": "bfe20f050368d0b10c9e17ea8a160e0dbd51792445249d17acbd8174f46258b6",
     "Scripts/check_library_regressions.sh": "4da0b94bfcbe3e73646bb2acec5ce15927736bdc91f9c50859cb9e4212e85cda",
     "Scripts/unpack_media_sources.py": "30c01670b66eb087f7fab685459f30551ca904b112d7f09f20f0c27956168330",
-    "Scripts/build_windows.py": "874180f1420efde7ca15f1f7b4005fdfb8c628e2273b957dffa21d4227a5ac3b",
+    "Scripts/build_windows.py": "0f6618e2d602c67394231e0bd11cf20504e7e2f7fa98e992addfa74bfe08926d",
     "Scripts/build.sh": "0a70409389a99fa82ee1abfa349822fc718ba8beef0b97e713abee684803f066",
     "Scripts/build_media_tools.sh": "5dedac27d84d2b22eb1e14814d67cb7735d74b4b045beaf7cf30cb20972c35a8",
     "Scripts/audit_release.py": "a48858051250a7e3e64b721237522ecbc0636e1e3cf161c9ebe80e365525d4c3",

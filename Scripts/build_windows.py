@@ -11,6 +11,10 @@ shutil.copytree(Path(a.tools),resources/'Tools',dirs_exist_ok=True)
 licenses=resources/'Licenses';licenses.mkdir(exist_ok=True)
 shutil.copy2(root/'Backend/upstream/LICENSE',licenses/'Douyin_API_APACHE2.txt')
 subprocess.run([sys.executable,str(root/'Scripts/licenses.py'),str(licenses)],cwd=root,check=True)
+components=licenses/'components.json'
+inventory=json.loads(components.read_text())
+inventory['ffmpeg']='9.0.1 GPL-3.0-or-later; frozen MinGW build with x264, dav1d, OpenSSL and zlib; corresponding sources supplied'
+components.write_text(json.dumps(inventory,indent=2)+'\n',encoding='utf8')
 (licenses/'media-sources.json').write_bytes((root/'Vendor/MediaSources/sources.json').read_bytes())
 shutil.copy2(resources/'Tools/FFmpeg-COPYING.GPLv3.txt',licenses/'FFmpeg-COPYING.GPLv3.txt')
 for source,dest in [('GlassWallpaper.png','wallpaper.png'),('GlassWallpaperDay.png','wallpaper-day.png'),('Brand.png','brand.png')]:shutil.copy2(root/'Assets'/source,root/'Desktop/ui'/dest)
