@@ -30,15 +30,16 @@ docs=out/'docs';docs.mkdir(exist_ok=True)
 
 [最新版发行页](https://github.com/SJT-bright/shiying/releases/latest)
 
-- Mac：Apple Silicon，macOS 26 或以上，下载 `Shiying-1.8.0-Mac-arm64.dmg`。
-- Windows：Windows 10/11 x64，下载 `Shiying-1.8.0-Windows-x64-Setup.exe`；另有免安装 ZIP。
+- Mac：Apple Silicon，macOS 26 或以上，下载 `Shiying-1.8.1-Mac-arm64.dmg`。
+- Windows：Windows 10/11 x64，目前为1.8.0，[下载最新界面适配版](https://github.com/SJT-bright/shiying-media-workbench/releases/tag/v1.8.0)，提供安装EXE和免安装ZIP。
+- 本次1.8.1新增的封面采集功能适用于Mac原生版。
 - 源码与媒体组件对应源码在同一发行页。安装包未做商业证书签名或 Apple 公证。
 
 ## 使用
 
 在「新建下载」粘贴分享链接，选择画质、保存目录，点击「开始下载」。支持抖音、B站、小红书和视频号；各平台在内置网页中登录，状态保留在这台电脑的拾影中。视频号分享使用独立元宝登录解析，视频号助手登录不能代替元宝。网站登录或验证由用户完成。
 
-图文先临时预览，可复制图片或确认保存，取消和离页清理未确认图片。批量队列按收藏夹整理，可暂停、重试并配套保存 M4A。已保存视频支持卡片内播放；资料有来源筛选、学习备注、真实目录移动和手动统计更新，缺失统计不按0处理。公众号文章独立保存 Markdown、离线 HTML 和原图；网页验证时可在内置页检查后读取当前正文。
+新建下载和博主采集可独立勾选「采集视频」「采集封面」，默认仅视频，支持仅封面与同时采集。封面直接读取平台图片，先临时下载，可右键复制；确认才保存，取消、换输入、离页和关闭清理本轮临时图片。同时采集时先确认封面，再下载视频。图文沿用临时预览、复制与确认保存。批量队列按收藏夹整理，可暂停、重试并配套保存 M4A。已保存视频支持卡片内播放；资料有来源筛选、学习备注、真实目录移动和手动统计更新，缺失统计不按0处理。公众号文章独立保存 Markdown、离线 HTML 和原图；网页验证时可在内置页检查后读取当前正文。
 
 公开接口的可访问范围取决于平台与当前登录；单条分享不代表作者全集。Mac 与 Windows 的登录和资料独立存储；发行包没有作者本机的登录、媒体和下载记录。
 
@@ -83,7 +84,7 @@ Mac与Windows使用相同下载/图文/文章/统计内核，界面按系统适�
 发布前以Actions与发布回执的实际结果为准，不把源码上传或打包成功称为所有平台在线下载验收。
 ''',encoding='utf8')
 (docs/'index.md').write_text('# 资料索引\n\n- [构建](BUILD.md)：按平台复现打包。\n- [第三方组件](THIRD_PARTY.md)：许可、来源与冻结源码。\n- [验证范围](VALIDATION.md)：区分代码检查、实际包和在线账号。\n')
-(docs/'log.md').write_text('# 发布日志\n\n- 2026-10-12：从当前1.7.5业务基线适配Windows桌面，共享内核新增Windows文件名、组件路径及取消信号处理。发布目标1.8.0；最终发行资产以GitHub Release为准。\n')
-(out/'source-snapshot.json').write_text(json.dumps({'baseVersion':'1.7.5','releaseVersion':'1.8.0','upstream':'4f0bed8483c35a980315d9c7b3a1d4a1119ad2b2','files':manifest},indent=2)+'\n')
+(docs/'log.md').write_text('# 发布日志\n\n- 2026-10-12：从当前1.7.5业务基线适配Windows桌面，共享内核新增Windows文件名、组件路径及取消信号处理。发布目标1.8.0；最终发行资产以GitHub Release为准。\n- 2026-10-13：Mac1.8.1/build37新增独立视频与封面选项、临时封面复制和确认/取消保存。Windows保持已验证1.8.0，最新Windows主线见shiying-media-workbench。\n')
+(out/'source-snapshot.json').write_text(json.dumps({'baseVersion':'1.8.1','releaseVersion':'1.8.1','upstream':'4f0bed8483c35a980315d9c7b3a1d4a1119ad2b2','files':manifest},indent=2)+'\n')
 subprocess.run(['python3',str(root/'Scripts/audit_release.py'),str(out),'--source'],check=True)
 print('Sanitized source snapshot prepared: '+str(out))
